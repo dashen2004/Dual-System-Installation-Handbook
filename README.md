@@ -1,3 +1,170 @@
+# Dual-System Installation Handbook
+
+[English](#english-version) | [中文](#中文说明)
+
+---
+
+# <a name="english-version"></a>English Version
+
+## Dual System (Windows 11 & Ubuntu) Installation Guide
+
+### I. Preparation
+
+#### Hardware Requirements
+- **Two Computers**:
+  - One for viewing the installation guide
+  - One for installing the dual system (must have two disks)
+- **Three USB Drives**:
+  - Windows system USB (at least 8GB)
+  - Ubuntu system USB (at least 8GB)
+  - File backup USB
+
+#### File Backup
+- Copy all important files from the computer to the backup USB.
+- Delete or uninstall unnecessary software and files. After confirming all files are transferred, format the disk to factory settings (this is optional, as the installation process includes formatting steps).
+
+---
+
+### II. Creating Bootable USB Drives
+
+#### Windows 11 Bootable USB
+- Download the [Windows 11 ISO image](https://www.microsoft.com/en-us/software-download/windows11).
+- Download and install [Rufus](https://rufus.ie/en/).
+- Insert the Windows system USB, ensuring it is formatted and contains no other files.
+- Use Rufus to write the ISO image, and wait for the "Ready" prompt to indicate completion.
+- Reference configuration:
+  Device: Select the USB drive  
+  Boot selection: Click "Select" to locate the ISO image file stored on the local computer  
+  Partition scheme: Select "MBR" (Note: For newer motherboards, typically supporting GPT partition and UEFI boot, select "GPT"; for older motherboards, select "MBR")  
+  Volume label: Name of the bootable USB  
+  Others: Default settings, no changes needed  
+  ![](images/win11_rufus_choice1.png)  
+  ![](images/win11_rufus_choice2.png)  
+- Wait for the process to complete  
+  The process takes approximately 3-10 minutes. Once completed, the status will change to "Ready";  
+  Click "Close".
+
+#### Ubuntu Bootable USB
+- Download the [Ubuntu ISO image](https://ubuntu.com/download).
+- Use Rufus to create the bootable USB. The process is complete once the ISO is written.
+- Follow the steps shown in the screenshots below:  
+  ![](images/ubuntu_rufus_choice1.png)  
+  ![](images/ubuntu_rufus_choice2.png)  
+  ![](images/ubuntu_rufus_choice3.png)  
+  ![](images/ubuntu_rufus_choice4.png)  
+
+---
+
+### III. Installing Windows 11
+
+#### BIOS Settings
+- Insert the Windows USB and press F12, F9, or ESC (depending on the brand) during startup to enter BIOS.
+- Disable Secure Boot, set the boot order to prioritize the USB, save, and restart.
+
+#### System Installation
+- Follow the prompts to select language, region, and keyboard layout.
+- For general users, install Windows 11 Home; for professional users, choose Pro.  
+  ![](images/win1.jpg)  
+- Skip entering the product key for now.
+- Select the disk, delete all partitions to create "Unallocated Space," and click Next to install.  
+  ![](images/win2.jpg)  
+  ![](images/win3.jpg)  
+- After installation, remove the USB and restart to enter the newly installed Windows 11.  
+  ![](images/win4.jpg)  
+
+---
+
+### IV. Installing Ubuntu
+
+#### Start Installation
+- Insert the Ubuntu USB and restart to enter the Ubuntu installation interface.  
+  ![](images/ubunutu1.jpg)  
+  ![](images/ubunutu2.jpg)  
+
+#### Disk Partitioning Scheme
+- Delete all disk partitions to create Free Space.
+- Recommended partition structure:
+  - EFI partition: 512MB, EFI
+  - Swap partition: Logical, twice the size of physical memory, Swap Area
+  - Root partition (/): At least 100GB, Ext4
+  - Home partition (/home): Remaining space, Ext4
+
+#### Partitioning Steps
+- Create the above partitions in sequence on the installation interface.  
+  ![](images/efi.png)  
+  ![](images/swap.png)  
+  ![](images/ubunutu4.jpg)  
+  ![](images/ubunutu3.jpg)  
+- After partitioning, select the EFI boot partition and click Install.
+- Enter username and password to complete the installation.  
+  ![](images/ubunutu5.jpg)  
+
+---
+
+### V. Configuring the Boot Menu (GRUB)
+- Open a terminal in Ubuntu and enter:
+
+```bash
+sudo nano /etc/default/grub
+```
+- Locate and modify the following lines:
+
+```bash
+GRUB_TIMEOUT=10  # Wait time for user to select system, defaults to 10 seconds
+GRUB_DEFAULT=2   # Set default boot to Windows (usually the 3rd option)
+```
+- Save changes and exit the editor: Press Ctrl+O, then Enter to save, and Ctrl+X to exit.
+- Update GRUB settings:
+
+```bash
+sudo update-grub
+```
+- Restart to see the GRUB menu.  
+  ![](images/ubunutu0.jpg)  
+
+---
+
+### VI. Installing Windows Drivers
+
+#### Driver Installation Order
+- Prioritize installing the network driver.
+- Once the network is connected, visit the computer manufacturer's official website to automatically detect and install other required drivers.
+
+#### Driver Status Check
+- Open **Device Manager** and check for devices marked with a yellow exclamation point.
+- If any drivers are not installed correctly, use Windows Update for automatic fixes or manually download the appropriate drivers from the computer manufacturer's website.  
+  ![](images/win5.jpg)  
+
+---
+
+### VII. Optimizing Windows Disk Space and Desktop Settings
+
+#### Recommended Disk Layout
+- Ensure the system disk (C drive) has at least 250GB of space.
+
+#### Desktop Folder Migration Steps
+1. Open File Explorer and navigate to: `C:\Users\YourUsername\Desktop`.
+2. Right-click the "Desktop" folder and select **Properties**.
+3. In the **Location** tab, click **Move** and select a folder on another disk.
+4. Click **Apply** to confirm. When prompted to move existing files, select **Yes**.
+
+---
+
+### VIII. Installing Common Software and Activating Products
+
+#### Software Installation Recommendations
+- Recommended software:
+  - Sogou Input Method (Chinese input method)
+  - WeChat (Chinese social platform)
+  - Chrome Browser
+  - Microsoft Office Suite (download and install via Microsoft Store or official website)
+
+#### Software Activation Notes
+- Microsoft Office can be installed by logging into a Microsoft account. To activate, purchase a legitimate product key from authorized channels (e.g., Taobao or Microsoft’s official store).
+
+---
+# 中文说明
+
 ## 双系统（Windows 11 & Ubuntu）安装指南
 
 ### 一、准备工作
@@ -145,4 +312,5 @@
 - Microsoft Office 可通过微软账号登录安装，若需激活密钥，请前往正规渠道（例如淘宝或微软官方商城）购买正版产品。
 
 ---
+
 
